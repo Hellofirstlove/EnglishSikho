@@ -8,22 +8,54 @@
   background-color: #422ad5;
   color: white;
 }
-    .form-container {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      width: 250px;
-    }
 
-    input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-      font-size: 14px;
-    }
+/* ===== Login Form ===== */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 280px;
+}
 
-    input:focus {
-      border-color: #6c63ff;
-      box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
-    }
+.form-container input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-container input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 6px rgba(108, 99, 255, 0.4);
+}
+
+/* ===== Theme Toggle Button ===== */
+#theme-toggle {
+  transition: transform 0.3s ease;
+}
+#theme-toggle:hover {
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* ===== Day/Night icon transition ===== */
+#theme-icon,
+#theme-icon-mobile {
+  transition: opacity 0.25s ease;
+}
+
+/* ===== Dark mode overrides for non-DaisyUI elements ===== */
+[data-theme="dark"] .form-container input {
+  border-color: #555;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .form-container input::placeholder {
+  color: #888;
+}
+[data-theme="dark"] .form-container input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 6px rgba(129, 140, 248, 0.4);
+}

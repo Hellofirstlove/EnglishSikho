@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8" />
@@ -30,7 +30,7 @@
 </head>
 
 <body>
-  <header>
+  <header class="sticky top-0 z-50">
     <div class="navbar bg-base-100 shadow-sm">
       <div class="navbar-start">
         <div class="dropdown">
@@ -42,51 +42,71 @@
           </div>
           <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li>
-              <a href="" class=""><i class="fa-solid fa-circle-question"></i> FAQ</a>
+              <a href="#" id="btn-home-mobile" class=""><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
-              <a href="" class=""><i class="fa-solid fa-book-open"></i> Learn</a>
+              <a href="#" class=""><i class="fa-solid fa-circle-question"></i> FAQ</a>
             </li>
             <li>
-              <a href="" class=""><i class="fa-solid fa-arrow-right-from-bracket"></i>
-                LogOut</a>
+              <a href="#" id="btn-learn-mobile" class=""><i class="fa-solid fa-book-open"></i> Learn</a>
+            </li>
+            <li>
+              <!-- Mobile theme toggle -->
+              <button id="theme-toggle-mobile" class="flex items-center gap-2 w-full text-left">
+                <i id="theme-icon-mobile" class="fa-solid fa-sun"></i>
+                <span id="theme-label-mobile">Light Mode</span>
+              </button>
+            </li>
+            <li id="mobile-auth-item">
+              <!-- Dynamic login/logout for mobile – filled by JS -->
             </li>
           </ul>
         </div>
-        <a href="" class="flex items-center gap-1">
+        <a href="#" id="btn-logo" class="flex items-center gap-1">
           <span class="text-lg font-bold">English</span>
           <img src="./assets/logo.png" alt="" />
           <span class="font-bangla text-lg font-semibold">জানালা</span>
         </a>
       </div>
-      <div class="navbar-end hidden lg:flex">
-        <ul class="menu menu-horizontal px-1 space-x-4">
+
+      <div class="navbar-end hidden lg:flex items-center gap-3">
+        <ul class="menu menu-horizontal px-1 space-x-2">
           <li>
-            <a href="" class="btn btn-dash btn-primary"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+            <a href="#" id="btn-home-desktop" class="btn btn-dash btn-primary"><i class="fa-solid fa-house"></i> Home</a>
           </li>
           <li>
-            <a href="" class="btn btn-dash btn-primary"><i class="fa-solid fa-book-open"></i> Learn</a>
+            <a href="#" class="btn btn-dash btn-primary"><i class="fa-solid fa-circle-question"></i> FAQ</a>
           </li>
           <li>
-            <a href="" class="btn btn-dash btn-primary"><i class="fa-solid fa-arrow-right-from-bracket"></i> LogOut</a>
+            <a href="#" id="btn-learn-desktop" class="btn btn-dash btn-primary"><i class="fa-solid fa-book-open"></i> Learn</a>
           </li>
         </ul>
+
+        <!-- Desktop: theme toggle -->
+        <button id="theme-toggle" class="btn btn-circle btn-ghost" title="Toggle Day/Night Mode">
+          <i id="theme-icon" class="fa-solid fa-sun text-yellow-400 text-xl"></i>
+        </button>
+
+        <!-- Desktop: dynamic auth button -->
+        <div id="desktop-auth"></div>
       </div>
     </div>
   </header>
 
-  <section class="flex flex-col-reverse md:flex-row gap-10 justify-between items-center py-5 w-11/12 mx-auto">
+  <!-- ===== LOGIN SECTION (shown when logged out) ===== -->
+  <section id="login-section" class="flex flex-col-reverse md:flex-row gap-10 justify-between items-center py-5 w-11/12 mx-auto">
     <div class="content flex-1 text-center md:text-left">
       <h2 class="text-4xl font-bold mb-8">
         <span class="text-sky-400">English</span> is Easy!!
       </h2>
       <p class="font-bangla py-5">
-        আজ থেকেই আপনার ভাষা শেখার যাত্রা শুরু করুন। সাবধান! আমাদের Interactive Lessons এ ঢুকলে আপনি এমন লেভেলে পৌঁছাবেন, যেখানে Google Translate-ও আপনাকে জিজ্ঞেস করবে—‘ভাই, একটু সাহায্য করবেন?’ 
+        আজ থেকেই আপনার ভাষা শেখার যাত্রা শুরু করুন। সাবধান! আমাদের Interactive Lessons এ ঢুকলে আপনি এমন লেভেলে পৌঁছাবেন, যেখানে Google Translate-ও আপনাকে জিজ্ঞেস করবে—'ভাই, একটু সাহায্য করবেন?' 
       </p>
       <div class="form-container">
-        <input type="text" placeholder="Enter Your Name">
-        <input type="password" placeholder="••••••••">
-        <button class="btn btn-dash btn-primary">Get Started</button>
+        <input id="input-name" type="text" placeholder="Enter Your Name" />
+        <input id="input-pass" type="password" placeholder="••••••••" />
+        <button id="btn-login" class="btn btn-dash btn-primary">Get Started</button>
+        <p id="login-error" class="text-red-500 text-sm hidden">Please enter your name and password.</p>
       </div>
     </div>
     <div class="image flex-1">
@@ -94,42 +114,144 @@
     </div>
   </section>
 
-  <section class="py-10">
-    <h2 class="text-4xl font-bold mb-8 text-center">
-      <span class="text-sky-400">Let's</span> Learn Vocabulary
-    </h2>
+  <!-- ===== MAIN CONTENT (shown when logged in) ===== -->
+  <div id="main-content" class="hidden">
 
-    <div id="level-container" class="flex gap-5 flex-wrap justify-center"></div>
-  </section>
-
-  <section class="flex justify-center">
-    <div class="join">
-      <div>
-        <label class="input validator join-item">
-          <input id="input-search" type="text" placeholder="Search Vocabulary Now" required />
-        </label>
+    <!-- Welcome banner with hero image -->
+    <div class="flex flex-col-reverse md:flex-row gap-8 justify-between items-center py-6 w-11/12 mx-auto">
+      <div class="flex-1">
+        <p class="text-lg font-semibold mb-2">👋 Welcome back, <span id="user-greeting" class="text-sky-500"></span>!</p>
+        <h2 class="text-3xl font-bold">
+          <span class="text-sky-400">Keep Learning,</span> Keep Growing!
+        </h2>
+        <p class="font-bangla mt-3 text-base-content/70">আপনার আজকের লেসন শুরু করুন এবং নতুন শব্দ শিখুন।</p>
       </div>
-      <button id="btn-search" class="btn btn-primary join-item">
-        Search
-      </button>
+      <div class="flex-1 flex justify-center">
+        <img src="./assets/hero-student.png" alt="Student learning" class="max-h-52 md:max-h-64 object-contain" />
+      </div>
     </div>
-  </section>
 
-  <section id="spinner" class="flex justify-center items-center py-10 hidden">
-    <span class="loading loading-bars loading-xl"></span>
-  </section>
+    <section class="py-10">
+      <h2 class="text-4xl font-bold mb-8 text-center">
+        <span class="text-sky-400">Let's</span> Learn Vocabulary
+      </h2>
 
-  <section id="word-container" class="bg-gray-100 p-10 w-11/12 mx-auto my-10 grid grid-cols-3 gap-5">
-    <div class="text-center bg-sky-100 col-span-full rounded-xl py-10 space-y-6 font-bangla">
-      <p class="text-xl font-medium text-gray-400">
-        আপনি এখনো কোন Lesson Select করেন নি
-      </p>
-      <h2 class="font-bold text-4xl">একটি Lesson Select করুন।</h2>
+      <div id="level-container" class="flex gap-5 flex-wrap justify-center"></div>
+    </section>
+
+    <section class="flex flex-col items-center gap-3">
+      <div class="join">
+        <div>
+          <label class="input validator join-item">
+            <input id="input-search" type="text" placeholder="Search Vocabulary Now" required />
+          </label>
+        </div>
+        <button id="btn-search" class="btn btn-primary join-item">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+      </div>
+      <!-- Back to Home button – shown only after a search -->
+      <button id="btn-back-home" class="btn btn-ghost btn-sm hidden">
+        <i class="fa-solid fa-arrow-left"></i> Back to Lessons
+      </button>
+    </section>
+
+    <section id="spinner" class="flex justify-center items-center py-10 hidden">
+      <span class="loading loading-bars loading-xl"></span>
+    </section>
+
+    <section id="word-container" class="bg-base-200 p-10 w-11/12 mx-auto my-10 grid grid-cols-3 gap-5">
+      <div class="text-center bg-base-100 col-span-full rounded-xl py-10 space-y-6 font-bangla">
+        <p class="text-xl font-medium text-base-content/50">
+          আপনি এখনো কোন Lesson Select করেন নি
+        </p>
+        <h2 class="font-bold text-4xl">একটি Lesson Select করুন।</h2>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== FAQ SECTION (always visible) ===== -->
+  <section id="faq-section" class="w-11/12 mx-auto py-16">
+    <div class="text-center mb-10">
+      <h2 class="text-4xl font-bold">
+        <span class="text-sky-400">Frequently</span> Asked Questions
+      </h2>
+      <p class="font-bangla mt-3 text-base-content/60">আপনার সাধারণ প্রশ্নের উত্তর এখানে পাবেন।</p>
+    </div>
+
+    <div class="space-y-3 max-w-3xl mx-auto">
+
+      <div class="collapse collapse-arrow bg-base-200 rounded-xl">
+        <input type="radio" name="faq-accordion" checked />
+        <div class="collapse-title text-lg font-semibold">
+          <i class="fa-solid fa-circle-question text-sky-400 mr-2"></i>
+          How do I start learning English?
+        </div>
+        <div class="collapse-content font-bangla text-base-content/80">
+          <p>লগইন করার পর <strong>Lesson</strong> বাটনে ক্লিক করুন। আপনার পছন্দের Lesson নির্বাচন করুন এবং নতুন শব্দ শিখতে শুরু করুন।</p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-arrow bg-base-200 rounded-xl">
+        <input type="radio" name="faq-accordion" />
+        <div class="collapse-title text-lg font-semibold">
+          <i class="fa-solid fa-circle-question text-sky-400 mr-2"></i>
+          What are the lesson levels?
+        </div>
+        <div class="collapse-content text-base-content/80">
+          <p>Lessons are organized by level number from beginner to advanced. Each contains English words with Bengali meanings, pronunciations, and example sentences.</p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-arrow bg-base-200 rounded-xl">
+        <input type="radio" name="faq-accordion" />
+        <div class="collapse-title text-lg font-semibold">
+          <i class="fa-solid fa-circle-question text-sky-400 mr-2"></i>
+          How do I hear the pronunciation of a word?
+        </div>
+        <div class="collapse-content text-base-content/80">
+          <p>Each vocabulary card has a <i class="fa-solid fa-volume-high text-sky-400"></i> <strong>speaker button</strong>. Click it to hear the word spoken by your browser. Click the <i class="fa-solid fa-circle-info text-sky-400"></i> <strong>info button</strong> for meaning, example sentence and synonyms.</p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-arrow bg-base-200 rounded-xl">
+        <input type="radio" name="faq-accordion" />
+        <div class="collapse-title text-lg font-semibold">
+          <i class="fa-solid fa-circle-question text-sky-400 mr-2"></i>
+          How do I search for a specific word?
+        </div>
+        <div class="collapse-content font-bangla text-base-content/80">
+          <p>লগইন করার পর <strong>Search Vocabulary Now</strong> বক্সে ইংরেজি শব্দ লিখে <strong>Search</strong> বা <strong>Enter</strong> চাপুন। ফলাফল দেখার পর ← <strong>Back to Lessons</strong> বাটনে ক্লিক করে ফিরে যেতে পারবেন।</p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-arrow bg-base-200 rounded-xl">
+        <input type="radio" name="faq-accordion" />
+        <div class="collapse-title text-lg font-semibold">
+          <i class="fa-solid fa-circle-question text-sky-400 mr-2"></i>
+          Is English Janala free?
+        </div>
+        <div class="collapse-content font-bangla text-base-content/80">
+          <p>হ্যাঁ! English Janala সম্পূর্ণ <strong>বিনামূল্যে</strong>। শুধু আপনার নাম ও পাসওয়ার্ড দিয়ে লগইন করুন।</p>
+        </div>
+      </div>
+
+      <div class="collapse collapse-arrow bg-base-200 rounded-xl">
+        <input type="radio" name="faq-accordion" />
+        <div class="collapse-title text-lg font-semibold">
+          <i class="fa-solid fa-circle-question text-sky-400 mr-2"></i>
+          How do I switch between Day and Night mode?
+        </div>
+        <div class="collapse-content text-base-content/80">
+          <p>Click the <i class="fa-solid fa-sun text-yellow-400"></i> / <i class="fa-solid fa-moon text-indigo-400"></i> icon in the navbar top-right. Your choice is saved and remembered on your next visit.</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <!-- Open the modal using ID.showModal() method -->
-  <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
 
   <dialog id="word_modal" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box">
